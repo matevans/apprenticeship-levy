@@ -23,6 +23,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import uk.gov.hmrc.apprenticeshiplevy.connectors.AuthConnector
+import uk.gov.hmrc.apprenticeshiplevy.controllers.auth.FakeAuthAction
 import uk.gov.hmrc.http.logging.Authorization
 import uk.gov.hmrc.http.{HeaderCarrier, HttpGet}
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -54,6 +55,7 @@ class RootControllerHeadersTest extends UnitSpec with MockitoSugar {
         def http: HttpGet = stubHttpGet
         protected def auditConnector: Option[AuditConnector] = None
       }
+      val authAction = FakeAuthAction
       def emprefUrl(empref: uk.gov.hmrc.apprenticeshiplevy.data.api.EmploymentReference): String = ""
       def rootUrl: String = ""
     }

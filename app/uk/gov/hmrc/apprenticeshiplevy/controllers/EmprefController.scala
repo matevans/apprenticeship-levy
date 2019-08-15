@@ -22,7 +22,7 @@ import play.api.libs.json.{JsObject, Json}
 import uk.gov.hmrc.apprenticeshiplevy.connectors.DesConnector
 import uk.gov.hmrc.apprenticeshiplevy.data.api.EmploymentReference
 import uk.gov.hmrc.apprenticeshiplevy.utils.DecodePath._
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait EmprefController extends DesController {
   def desConnector: DesConnector

@@ -34,7 +34,7 @@ import scala.concurrent.Future
 
 trait RootController extends ApiController {
   def authConnector: AuthConnector
-val authAction: AuthAction
+  val authAction: AuthAction
   def rootUrl: String
 
   def emprefUrl(empref: EmploymentReference): String
@@ -42,9 +42,9 @@ val authAction: AuthAction
   // Hook to allow post-processing of the links, specifically for sandbox handling
   def processLink(l: HalLink): HalLink = identity(l)
 
-  def root: Action[AnyContent] = (authAction compose withValidAcceptHeader).async { implicit request =>
-//    authConnector.getEmprefs.map(es => ok(transformEmpRefs(es))).recover(authErrorHandler)
-    Future.successful(ok(transformEmpRefs(List(request.empRef.value))))
+  def root: Action[AnyContent] = withValidAcceptHeader.async { implicit request =>
+    authConnector.getEmprefs.map(es => ok(transformEmpRefs(es))).recover(authErrorHandler)
+//    Future.successful(ok(transformEmpRefs(List(request.empRef.value))))
   }
 
   private[controllers] val authErrorHandler: PartialFunction[Throwable, Result] = {

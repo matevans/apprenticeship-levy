@@ -23,7 +23,7 @@ import uk.gov.hmrc.apprenticeshiplevy.controllers.sandbox.ErrorNotVisible
 import uk.gov.hmrc.apprenticeshiplevy.data.api.{EmploymentCheck, EmploymentReference, Nino}
 import uk.gov.hmrc.apprenticeshiplevy.data.des.{Employed, NotEmployed, Unknown}
 import uk.gov.hmrc.apprenticeshiplevy.utils.ClosedDateRange
-import uk.gov.hmrc.play.http.logging.MdcLoggingExecutionContext._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 import scala.concurrent.Future
 
