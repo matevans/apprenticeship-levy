@@ -22,17 +22,19 @@ import org.slf4j.MDC
 import play.api.Logger
 import play.api.hal.{HalLink, HalLinks, HalResource}
 import play.api.libs.json.{JsObject, Json}
-import play.api.mvc.Result
+import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.apprenticeshiplevy.connectors.AuthConnector
+import uk.gov.hmrc.apprenticeshiplevy.controllers.auth.AuthAction
 import uk.gov.hmrc.apprenticeshiplevy.data.api.EmploymentReference
 import uk.gov.hmrc.apprenticeshiplevy.utils.DecodePath.decodeAnyDoubleEncoding
 import uk.gov.hmrc.http._
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 trait RootController extends ApiController {
   def authConnector: AuthConnector
-
+val authAction: AuthAction
   def rootUrl: String
 
   def emprefUrl(empref: EmploymentReference): String
@@ -40,10 +42,9 @@ trait RootController extends ApiController {
   // Hook to allow post-processing of the links, specifically for sandbox handling
   def processLink(l: HalLink): HalLink = identity(l)
 
-  // scalastyle:off
-  def root = withValidAcceptHeader.async { implicit request =>
-  // scalastyle:on
-    authConnector.getEmprefs.map(es => ok(transformEmpRefs(es))).recover(authErrorHandler)
+  def root: Action[AnyContent] = (authAction compose withValidAcceptHeader).async { implicit request =>
+//    authConnector.getEmprefs.map(es => ok(transformEmpRefs(es))).recover(authErrorHandler)
+    Future.successful(ok(transformEmpRefs(List(request.empRef.value))))
   }
 
   private[controllers] val authErrorHandler: PartialFunction[Throwable, Result] = {

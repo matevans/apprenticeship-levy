@@ -21,9 +21,10 @@ import play.api.hal.HalLink
 import uk.gov.hmrc.apprenticeshiplevy.config.AppContext
 import uk.gov.hmrc.apprenticeshiplevy.connectors.SandboxAuthConnector
 import uk.gov.hmrc.apprenticeshiplevy.controllers.RootController
+import uk.gov.hmrc.apprenticeshiplevy.controllers.auth.AuthAction
 import uk.gov.hmrc.apprenticeshiplevy.data.api.EmploymentReference
 
-class SandboxRootController @Inject()(val authConnector: SandboxAuthConnector) extends RootController with SandboxLinkHelper {
+class SandboxRootController @Inject()(val authAction: AuthAction, val authConnector: SandboxAuthConnector) extends RootController with SandboxLinkHelper {
   override val env = AppContext.env
 
   override def rootUrl: String = routes.SandboxRootController.root().url
